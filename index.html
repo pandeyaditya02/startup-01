@@ -374,82 +374,83 @@
         /* YES BUTTON */
         .btn-yes {
             position: relative;
-            padding: 1rem 3rem;
+            padding: 1.2rem 3.5rem;
             font-family: var(--font-body);
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: white;
-            background: linear-gradient(135deg, var(--pink-500), var(--rose));
-            border: none;
+            background: linear-gradient(135deg, #ff6b8a, #e63946);
+            border: 3px solid rgba(255, 215, 0, 0.5);
             border-radius: 60px;
             cursor: pointer;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: var(--glow-pink);
+            box-shadow: 0 0 40px rgba(255, 107, 138, 0.5), 0 0 80px rgba(255, 107, 138, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             z-index: 5;
             letter-spacing: 1px;
-        }
-
-        .btn-yes::before {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 63px;
-            background: linear-gradient(135deg, var(--pink-400), var(--gold), var(--pink-400));
-            z-index: -1;
-            animation: borderGlow 3s linear infinite;
-        }
-
-        .btn-yes::after {
-            content: '';
-            position: absolute;
-            inset: 2px;
-            border-radius: 58px;
-            background: linear-gradient(135deg, var(--pink-500), var(--rose));
-            z-index: -1;
-        }
-
-        @keyframes borderGlow {
-            0% {
-                filter: hue-rotate(0deg);
-            }
-
-            100% {
-                filter: hue-rotate(360deg);
-            }
+            animation: btnYesEntry 0.6s ease 0.8s both, yesButtonPulse 2s ease-in-out 1.5s infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .btn-yes:hover {
             transform: scale(1.15);
-            box-shadow: 0 0 60px rgba(255, 107, 138, 0.6), 0 0 120px rgba(255, 107, 138, 0.3);
+            box-shadow: 0 0 60px rgba(255, 107, 138, 0.7), 0 0 120px rgba(255, 107, 138, 0.35);
         }
 
-        .btn-yes .btn-sparkles {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
+        @keyframes btnYesEntry {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes yesButtonPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 40px rgba(255, 107, 138, 0.5), 0 0 80px rgba(255, 107, 138, 0.25);
+            }
+
+            50% {
+                box-shadow: 0 0 60px rgba(255, 107, 138, 0.7), 0 0 100px rgba(255, 107, 138, 0.35), 0 0 140px rgba(255, 215, 0, 0.15);
+            }
         }
 
         /* NO BUTTON */
         .btn-no {
-            padding: 0.8rem 2rem;
+            padding: 0.9rem 2.2rem;
             font-family: var(--font-body);
             font-size: 1rem;
-            font-weight: 400;
-            color: var(--pink-400);
-            background: transparent;
-            border: 2px solid rgba(255, 143, 171, 0.3);
+            font-weight: 500;
+            color: var(--pink-300);
+            background: rgba(255, 107, 138, 0.1);
+            border: 2px solid rgba(255, 143, 171, 0.35);
             border-radius: 60px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
             position: relative;
             z-index: 5;
             user-select: none;
+            animation: btnNoEntry 0.5s ease 1.1s both;
+        }
+
+        @keyframes btnNoEntry {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         .btn-no:hover {
-            border-color: transparent;
-            color: transparent;
+            animation: shake 0.2s ease-in-out;
         }
 
         /* ============================
@@ -1784,37 +1785,32 @@
         // QUESTION SCENE ANIMATION
         // ============================
         function animateQuestionScene() {
-            const tl = gsap.timeline();
-
-            tl.from('.bear-emoji', {
-                scale: 0,
-                rotation: -180,
-                duration: 0.8,
-                ease: "back.out(1.7)"
-            })
-                .from('.question-title', {
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.6,
-                    ease: "power3.out"
-                }, "-=0.3")
-                .from('.question-subtitle', {
-                    y: 30,
-                    opacity: 0,
-                    duration: 0.5,
-                    ease: "power3.out"
-                }, "-=0.2")
-                .from('.btn-yes', {
+            // Animate text elements with GSAP (buttons use CSS animations for reliability)
+            try {
+                const tl = gsap.timeline();
+                tl.from('.bear-emoji', {
                     scale: 0,
-                    duration: 0.5,
-                    ease: "back.out(2)"
-                }, "-=0.1")
-                .from('.btn-no', {
-                    scale: 0,
-                    duration: 0.4,
-                    ease: "back.out(2)"
-                }, "-=0.2");
+                    rotation: -180,
+                    duration: 0.8,
+                    ease: "back.out(1.7)"
+                })
+                    .from('.question-title', {
+                        y: 50,
+                        opacity: 0,
+                        duration: 0.6,
+                        ease: "power3.out"
+                    }, "-=0.3")
+                    .from('.question-subtitle', {
+                        y: 30,
+                        opacity: 0,
+                        duration: 0.5,
+                        ease: "power3.out"
+                    }, "-=0.2");
+            } catch (e) {
+                console.warn('GSAP animation error:', e);
+            }
 
+            // Buttons animate via CSS @keyframes (btnYesEntry & btnNoEntry)
             // Setup the NO button shenanigans
             setupNoButton();
 
