@@ -162,12 +162,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             z-index: 10;
-            padding: 2rem;
+            padding: 3rem 2rem 4rem;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.8s ease, visibility 0.8s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .scene.active {
@@ -180,6 +182,7 @@
     ============================ */
         #scene-intro {
             background: var(--bg-gradient);
+            justify-content: center;
         }
 
         .envelope-container {
@@ -303,6 +306,7 @@
     ============================ */
         #scene-question {
             background: var(--bg-gradient);
+            justify-content: center;
         }
 
         .question-wrapper {
